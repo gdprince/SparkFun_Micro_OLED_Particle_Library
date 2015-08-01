@@ -105,6 +105,23 @@ MicroOLED::MicroOLED(micro_oled_mode mode, uint8_t rst, uint8_t dc, uint8_t cs)
 	else if (mode == MODE_I2C)
 		setup(mode, rst, dc, cs);
 }
+/** \brief MicroOLED Constructor -- I2C Mode
+
+	Setup the MicroOLED class, configure the display to be controlled via a
+	I2C interface.
+*/
+MicroOLED::MicroOLED(uint8_t rst, uint8_t dc)
+{
+	rstPin = rst;	// Assign reset pin to private class variable
+	interface = MODE_I2C;	// Set interface to I2C
+	// Set the I2C Address based on whether DC is high (1) or low (0).
+	// The pin is pulled low by default, so if it's not explicitly set to
+	// 1, just default to 0.
+	if (dc == 1)
+		i2c_address = I2C_ADDRESS_SA0_1;
+	else
+		i2c_address = I2C_ADDRESS_SA0_0;
+}
 
 void MicroOLED::setup(micro_oled_mode mode, uint8_t rst, uint8_t dc, uint8_t cs)
 {
